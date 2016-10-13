@@ -57,10 +57,13 @@ set_location_assignment PIN_V16 -to pin_name1
 set_location_assignment PIN_AA15 -to pin_name2
 set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
 set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
+set_global_assignment -name VERILOG_FILE "design files/module sprite_tester.v"
 set_global_assignment -name VERILOG_FILE "design files/vga_upsampler.v"
 set_global_assignment -name VERILOG_FILE "design files/vga_controller_sprites.v"
 set_global_assignment -name VERILOG_FILE "design files/sprite_engine.v"
 set_global_assignment -name BDF_FILE "design files/memtest.bdf"
 set_global_assignment -name QIP_FILE rom.qip
 set_global_assignment -name QIP_FILE mem_address_mux.qip
+set_global_assignment -name QIP_FILE pll.qip
+set_global_assignment -name SIP_FILE pll.sip
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

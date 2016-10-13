@@ -66,6 +66,15 @@ begin
 		else begin
 			clk_out=0;
 		end
+
+		if(counterV>vfp)
+		begin
+			between_frames = 1;
+		end
+		else
+		begin
+			between_frames = 0;
+		end
 	end
 end
 
