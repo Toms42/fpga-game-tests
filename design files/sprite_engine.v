@@ -93,11 +93,10 @@ reg[15:0] sprite_address;
 reg[7:0] x;
 reg[7:0] y;
 
-
 function inbounds;//return if current pixel location is in the sprite's regioneroni.
 input xbase, ybase, xcurrent, ycurrent;
 begin
-	inbounds = (screenX>=x && screenX<x+8 && screenY >= y && screenY < y+8);
+	inbounds = (xcurrent>=xbase && xcurrent<xbase+8 && ycurrent >= ybase && ycurrent < ybase+8);
 end
 endfunction
 
