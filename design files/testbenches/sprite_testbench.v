@@ -1,5 +1,3 @@
-`include "sprite_engine.v"
-
 module testbench;
 	wire clk;
 	wire prev_enable;
@@ -39,9 +37,7 @@ module testbench;
 	requested_sprite_idwire,
 	set_address,
 	program_activewire,
-	mem_addresswire,
 	rgbinwire,
-	membuswire,
 	clearwire,
 	setxwire,
 	setywire,
@@ -88,4 +84,10 @@ module testbench;
 	requested_sprite_id_out,
 	set_address_out,
 	clear_out);
-	endmodule
+
+	virtual_memory mem(
+		membuswire,
+		clk,
+		mem_address_out);
+
+endmodule

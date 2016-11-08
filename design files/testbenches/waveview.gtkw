@@ -1,26 +1,67 @@
 [*]
 [*] GTKWave Analyzer v3.3.71 (w)1999-2016 BSI
-[*] Tue Nov 01 14:16:22 2016
+[*] Tue Nov 08 16:32:57 2016
 [*]
 [dumpfile] "C:\Users\17scherlist\0\fpga\memory_test\design files\testbenches\sprite_test.vcd"
-[dumpfile_mtime] "Tue Nov 01 14:10:59 2016"
-[dumpfile_size] 63012416
+[dumpfile_mtime] "Tue Nov 08 16:32:38 2016"
+[dumpfile_size] 40004723
 [savefile] "C:\Users\17scherlist\0\fpga\memory_test\design files\testbenches\waveview.gtkw"
-[timestart] 53000
+[timestart] 2002
 [size] 1280 962
 [pos] -1 -1
-*-18.000000 345000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-4.000000 2009 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] testbench.
 [treeopen] testbench.se.
 [sst_width] 197
-[signals_width] 313
+[signals_width] 309
 [sst_expanded] 1
-[sst_vpaned_height] 294
-@24
-testbench.se.in_bounds.in_bounds
-testbench.se.mem_address_gen.mem_address_gen
+[sst_vpaned_height] 280
+@28
+testbench.se.clear
+testbench.se.clear_out
+testbench.se.clk
+testbench.se.clk_out
+@29
+testbench.tester.pixel_clock
+@28
+testbench.se.enable_out
+@22
+testbench.se.mem_address[15:0]
+testbench.se.mem_address_out[15:0]
+testbench.se.membus[7:0]
+testbench.se.membus_out[7:0]
+@28
+testbench.se.prev_enable
+testbench.se.program_active
+testbench.se.program_active_out
+@22
+testbench.se.requested_sprite_id[5:0]
+testbench.se.requested_sprite_id_out[5:0]
+@28
+testbench.se.result
+@22
+testbench.se.rgbin[7:0]
+testbench.se.rgbout[7:0]
+testbench.se.screenX[7:0]
+testbench.se.screenXout[7:0]
+testbench.se.screenY[7:0]
+testbench.se.screenYout[7:0]
+testbench.se.set_address[15:0]
+testbench.se.set_address_out[15:0]
+testbench.se.setx[7:0]
+testbench.se.setxout[7:0]
+testbench.se.sety[7:0]
+testbench.se.setyout[7:0]
+testbench.se.sprite_address[15:0]
+testbench.se.sprite_id[5:0]
+testbench.se.sprite_id_out[5:0]
 testbench.se.x[7:0]
 testbench.se.y[7:0]
-testbench.se.sprite_id[5:0]
+testbench.mem.address[15:0]
+@28
+testbench.mem.clk
+@22
+testbench.membuswire[7:0]
+testbench.mem.data[7:0]
 [pattern_trace] 1
 [pattern_trace] 0

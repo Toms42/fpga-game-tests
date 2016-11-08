@@ -48,8 +48,8 @@ reg[7:0] x = 0;
 reg[7:0] y = 0;
 
 
-function mem_address_gen;//return the address of the next pixel no the sprite
-input xrel, yrel, base_address;
+function [7:0] mem_address_gen;//return the address of the next pixel no the sprite
+input [7:0] xrel, yrel, base_address;
 begin
 	mem_address_gen = base_address+xrel+8*yrel;
 end
@@ -84,7 +84,7 @@ end
 always @(posedge clk)//handle pixel data and stuff
 begin
 	rgbout = in_bounds(x,y,screenX,screenY) == 1 ? membus : rgbin;
-	mem_address_out = in_bounds(x,y,screenX,screenY)==1 && !prev_enable ? (mem_address_gen(x,y,sprite_address)) : mem_address;
+	mem_address_out = in_bounds(x,y,screenX,screenY)==1 && !prev_enable ? (mem_address_gen(screenX-x,screenY-y,sprite_address)) : mem_address;
 	enable_out = prev_enable || in_bounds(x,y,screenX,screenY) == 1 || membus!=0 ? 1 : 0;
 end
 

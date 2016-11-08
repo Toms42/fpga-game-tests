@@ -6,9 +6,7 @@ module sprite_tester(	output reg clk,
 						output reg[5:0] requested_sprite_id = 0,
 						output reg[15:0] set_address =0 ,
 						output reg program_active = 0,
-						output reg[15:0] mem_address = 0,
 						output reg[7:0] rgbin = 0,
-						output reg[7:0] membus = 0,
 						output reg clear = 0,
 						output reg[7:0] setx = 0,
 						output reg[7:0] sety = 0,
@@ -93,5 +91,9 @@ module sprite_tester(	output reg clk,
 
 		#2 program_active = 0;
 		cycle = cycle + 1;
+		if(cycle == 3)
+		begin
+			cycle = 0;
+		end
 	end
 endmodule
