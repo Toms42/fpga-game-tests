@@ -1,3 +1,4 @@
+//simulates memory
 module virtual_memory(
 	output reg[7:0] data = 0,
 	input wire clk,

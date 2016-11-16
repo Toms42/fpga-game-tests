@@ -1,109 +1,73 @@
-module sprite_engine (clk, clk_out, screenX,screenY, rgbin, rgbout, screenXout, 
-	screenYout, membus, membus_out, mem_address, mem_address_out, enable_out, prev_enable, requested_sprite_id, requested_sprite_id_out,
-	set_address, set_address_out, program_active_out, program_active, setx, sety, setxout, setyout,
-	sprite_id, sprite_id_out, clear, clear_out);
+module sprite_engine (	input wire clk,
+						input wire prev_enable,
+						input wire[5:0] sprite_id,
+						input wire[7:0] screenX,
+						input wire[7:0] screenY,
+						input wire[5:0] requested_sprite_id,
+						input wire[15:0] set_address,
+						input wire program_active,
+						input wire[15:0] mem_address,
+						input wire[7:0] rgbin,
+						input wire[7:0] membus,
+						input wire clear,
+						input wire[7:0] setx,
+						input wire[7:0] sety,
+						output reg[7:0] rgbout,
+						output wire[7:0] membus_out,
+						output wire clk_out,
+						output reg[15:0] mem_address_out,
+						output reg enable_out,
+						output wire[5:0] sprite_id_out,
+						output wire[7:0] screenXout,
+						output wire[7:0] screenYout,
+						output wire program_active_out,
+						output wire[7:0] setxout,
+						output wire[7:0] setyout,
+						output wire[5:0] requested_sprite_id_out,
+						output wire[15:0] set_address_out,
+						output wire clear_out);
 
 //define all module IO:
 
-input clk;
-wire clk;
-output clk_out;
-wire clk_out;
+
 assign clk_out = clk;
-
-input clear;
-wire clear;
-output clear_out;
-wire clear_out;
 assign clear_out = clear;
-
-input[7:0] rgbin;
-wire[7:0] rgbin;
-
-input[7:0] screenX;
-wire[7:0] screenX;
-output[7:0] screenXout;
-wire[7:0] screenXout;
 assign screenXout = screenX;
-
-input[7:0] screenY;
-wire[7:0] screenY;
-output[7:0] screenYout;
-wire[7:0] screenYout;
 assign screenYout = screenY;
-
-output[7:0] rgbout;
-reg[7:0] rgbout;
-
-output enable_out;
-reg enable_out;
-
-input prev_enable;
-wire prev_enable;
-
-input[7:0] membus;
-wire[7:0] membus;
-output[7:0] membus_out;
-wire[7:0] membus_out;
 assign membus_out = membus;
-
-input[15:0] mem_address;
-wire[15:0] mem_address;
-output[15:0] mem_address_out;
-reg[15:0] mem_address_out;
-
-input[15:0] set_address;
-wire[15:0] set_address;
-output[15:0] set_address_out;
-wire[15:0] set_address_out;
-assign set_address_out = set_address;
-
-input program_active;
-output program_active_out;
-wire program_active;
-wire program_active_out;
 assign program_active_out = program_active;
-
-input[7:0] setx;
-wire[7:0] setx;
-input[7:0] sety;
-wire[7:0] sety;
-output[7:0] setxout;
-wire[7:0] setxout;
-output[7:0] setyout;
-wire[7:0] setyout;
 assign setxout = setx;
 assign setyout = sety;
-
-input[5:0] requested_sprite_id;
-wire[5:0] requested_sprite_id;
-output[5:0] requested_sprite_id_out;
-wire[5:0] requested_sprite_id_out;
 assign requested_sprite_id_out = requested_sprite_id;
-
-input[5:0] sprite_id;
-wire[5:0] sprite_id;
-output[5:0] sprite_id_out;
-wire[5:0] sprite_id_out;
 assign sprite_id_out = 1 + sprite_id;
-
+assign set_address_out = set_address;
 
 //internal variables
-reg[15:0] sprite_address;
-reg[7:0] x;
-reg[7:0] y;
+reg[15:0] sprite_address = 0;
+reg[7:0] x = 0;
+reg[7:0] y = 0;
 
-function inbounds;//return if current pixel location is in the sprite's regioneroni.
-input xbase, ybase, xcurrent, ycurrent;
+
+function [7:0] mem_address_gen;//return the address of the next pixel no the sprite
+input [7:0] xrel, yrel, base_address;
 begin
-	inbounds = (xcurrent>=xbase && xcurrent<xbase+8 && ycurrent >= ybase && ycurrent < ybase+8);
+	mem_address_gen = base_address+xrel+8*yrel;
 end
 endfunction
 
-function mem_address_gen;//return the address of the next pixel no the sprite
-input xrel, yrel, base_address;
+reg result;
+function in_bounds;//return if current pixel location is in the sprite's regioneroni.
+input [7:0] xbase, ybase, xcurrent, ycurrent;
 begin
-	mem_address_gen = base_address+xrel+8*yrel;
+	result = 0;
+	if(xcurrent >= xbase 
+		&& xcurrent < xbase+8 
+		&& ycurrent >= ybase 
+		&& ycurrent < ybase+8)
+	begin
+		result = 1;
+	end
+	in_bounds = result;
 end
 endfunction
 
@@ -112,16 +76,16 @@ begin
 	if(requested_sprite_id==sprite_id)
 	begin
 		sprite_address=set_address;
-		x<=setx;
-		y<=sety;
+		x=setx;
+		y=sety;
 	end
 end
 
 always @(posedge clk)//handle pixel data and stuff
 begin
-	rgbout <= (inbounds(x,y,screenX,screenY)) ? membus : rgbin;
-	mem_address_out <= inbounds && !prev_enable ? (mem_address_gen(x,y,sprite_address)) : mem_address;
-	enable_out <= prev_enable || inbounds || membus!=0 ? 1 : 0;
+	rgbout = in_bounds(x,y,screenX,screenY) == 1 ? membus : rgbin;
+	mem_address_out = in_bounds(x,y,screenX,screenY)==1 && !prev_enable ? (mem_address_gen(screenX-x,screenY-y,sprite_address)) : mem_address;
+	enable_out = prev_enable || in_bounds(x,y,screenX,screenY) == 1 || membus!=0 ? 1 : 0;
 end
 
 always @(posedge clear)
